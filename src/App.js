@@ -2,8 +2,11 @@ import React, { useEffect } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import { auth, createUserProfile, addCollectionAndDocuments } from './firebase/firebase.utils';
+
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectAll } from './redux/announcements/announcements.selector';
 
 import { ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
@@ -13,14 +16,13 @@ import Announcements from './pages/announcements/announcements.component';
 import HeaderContainer from './components/header/header-container.component';
 import HomePage from './pages/homepage/homepage.component';
 import SignInPage from './pages/sign-in-page/sign-in-page.component';
-import { auth, createUserProfile } from './firebase/firebase.utils';
 import Footer from './components/footer/footer.component';
 
 import { setCurrentUser } from './redux/user/user.actions';
 
 import { MainContainer, PageContainer } from './app.styles';
 
-function App ({ currentUser, setCurrentUser }) {
+function App ({ currentUser, setCurrentUser, collectionsArray }) {
   
   useEffect(() => {
     let unSubscribeFromAuth = null
@@ -39,6 +41,9 @@ function App ({ currentUser, setCurrentUser }) {
         setCurrentUser(userAuth)
       }
     })
+
+    
+
     return function cleanUp() {
       unSubscribeFromAuth();
     }    
@@ -64,7 +69,8 @@ function App ({ currentUser, setCurrentUser }) {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  collectionsArray: selectAll
 });
 
 const mapDispatchToProps = dispatch => ({

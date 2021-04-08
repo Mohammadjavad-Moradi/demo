@@ -54,3 +54,8 @@ export const selectTitle = category =>
         [selectAnnouncements],
         announcements => announcements[category].title
     )
+
+export const selectAll = createSelector(
+    [selectAnnouncements],
+    announcements => Object.keys(announcements).map(key => announcements[key])
+)

@@ -1,5 +1,6 @@
 export const bankNews = {
     official: {
+        tempTitle: 'official',
         title: 'اعلانات اداری',
         linkUrl: '/announcements/official',
         content: {
@@ -349,6 +350,7 @@ export const bankNews = {
         }
     },
     occasional: {
+        tempTitle: 'occasional',
         title: 'اعلانات مناسبتی',
         linkUrl: '/announcements/occasional',
         content: {
@@ -698,6 +700,7 @@ export const bankNews = {
         }     
     },
     covid: {
+        tempTitle: 'covid',
         title: 'اخبار کرونا',
         linkUrl: '/announcements/covid',
         content: {
@@ -1047,6 +1050,7 @@ export const bankNews = {
         }
     },
     special: {
+        tempTitle: 'special',
             title: 'اعلانات ویژه',
             linkUrl: '/announcements/special',
             content: {
