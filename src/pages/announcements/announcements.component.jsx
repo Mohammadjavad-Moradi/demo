@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
 import { createStructuredSelector } from 'reselect';
-import { selectIsNewsDataFetching, selectIsNewsDataLoaded, selectPageSize, selectCategory } from '../../redux/temp-news-data/temp-news-data.selector';
+import { selectIsNewsDataFetching, selectIsNewsDataLoaded, selectPageSize } from '../../redux/temp-news-data/temp-news-data.selector';
 
-import { fetchNewsDataStartAsync, fetchNewsDataStart } from '../../redux/temp-news-data/temp-news-data.actions';
+import { fetchNewsDataStartAsync } from '../../redux/temp-news-data/temp-news-data.actions';
 
 import OfficialAnnouncement from '../../components/official-announcment-list/official-announcement.component';
 import AnnoucementFullView from '../../components/annoucement-full-view/annoucement-full-view.component';
