@@ -14,6 +14,13 @@ const config = {
 
 firebase.initializeApp(config);
 
+export const auth = firebase.auth();
+export const firestore = firebase.firestore();
+
+const provider = new firebase.auth.GoogleAuthProvider();
+provider.setCustomParameters({ prompt: 'select_account'});
+export const signInWithGoogle = () => auth.signInWithPopup(provider);
+
 export const createUserProfile = async (userAuth, additionalData) => {
     if(!userAuth) return;
     const userRef = firestore.doc(`users/${userAuth.uid}`);
@@ -34,17 +41,24 @@ export const createUserProfile = async (userAuth, additionalData) => {
         } catch( error ) {
             console.log(error)
         }
-
     }
-
     return userRef;
 }
 
-export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
-    //const collectionRef = firestore.collection('announcements').doc
-    //console.log(collectionRef)
-    //console.log(objectsToAdd)
+export const addHeader = async (collectionKey, headerData) => {
+    const collectionRef = firestore.collection(collectionKey);
+    console.log(collectionRef)
+    console.log(headerData)
+    const batch = firestore.batch();
+    headerData.forEach(el => {
+        const newDoc = collectionRef.doc(el.tempTitle);
+        console.log(newDoc)
+        batch.set(newDoc, el)
+    })
+    return await batch.commit()
+}
 
+export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => {
     const batch = firestore.batch();
     const newObj = objectsToAdd.map(({content, tempTitle}) => ({content, tempTitle}))
     console.log(newObj)
@@ -58,54 +72,63 @@ export const addCollectionAndDocuments = async (collectionKey, objectsToAdd) => 
             return batch.set(newDocRef, item);
         })
     })
-
     return await batch.commit();
 }
 
-
-const getContents = (doc) => {
-    const contentRef = firestore.collection(`announcements/${doc.id}/contents`);
-    const limit = contentRef.limit(10);
-    const contentObj = limit.onSnapshot( async snapshotContents => {
-
-        const myContent = snapshotContents.docs.map( item => {
-  
-            const obj =  item.data()
-            return { ...obj, id: item.id}
-        })
-        
-        console.log(myContent)
-        return myContent.reduce((accumulator, content) => {
-            accumulator[content.id] = content;
-            return accumulator
-        },{}) 
-                     
-    }) 
-    return contentObj
+export const getHeaderData = async (collectionData) => {
+    const headerData = await Promise.all(collectionData.docs.map( doc => {
+        return doc.data()
+    }))
+    return headerData.reduce((accumulator, content) => {
+        accumulator[content.tempTitle] = content;
+        return accumulator;
+    }, {})
 }
 
-export const getAnnouncementsData = (announcementsCollection) => {
-    const final = announcementsCollection.docs.map( doc => {
-        const { title } = doc.data();
-        
-        const { contents } = getContents(doc);
-        
-    
+const getContents = async (doc) => {
+    const contentRef = await firestore.collection(`announcements/${doc.id}/contents`).orderBy('time', 'desc').limit(6).get();
+    const myContent = contentRef.docs.map( item => {
+        const obj =  item.data()
+        return { ...obj, id: item.id}
+    })
+    const contentObj = myContent.reduce((accumulator, content) => {
+        accumulator[content.id] = content;
+        return accumulator
+    },{}) 
+    return contentObj;             
+}
+
+export const getAnnouncementsData = async (announcementsCollection) => {
+    const final = await Promise.all(announcementsCollection.docs.map( async doc => {
+        const { title, tempTitle } = doc.data();       
+        const content = await getContents(doc);  
         return {
             linkUrl: encodeURI(`/announcements/${doc.id.toLowerCase()}`),
             title,
-            contents           
+            tempTitle,
+            content           
         }      
-    })   
-    console.log(final);
-    return final;    
+    }))   
+
+    return final.reduce((accumulator, content) => {
+        accumulator[content.tempTitle] = content;
+        return accumulator
+    }, {})    
 }
 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const getPageData = (snapshot) => {
+    const newsData = snapshot.docs.map(doc => {
+        const obj =  doc.data()
+        return { ...obj, id: doc.id}
+    })
 
-const provider = new firebase.auth.GoogleAuthProvider();
-provider.setCustomParameters({ prompt: 'select_account'});
-export const signInWithGoogle = () => auth.signInWithPopup(provider);
+    const newsDataObj = newsData.reduce((accumulator, data) => {
+        accumulator[data.id] = data;
+        return accumulator;
+    },{})
+
+    return newsDataObj;
+}
+
 
 export default firebase;

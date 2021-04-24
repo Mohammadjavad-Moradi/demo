@@ -2,7 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { selectList, selectTitle } from '../../redux/announcements/announcements.selector';
+import { selectTitle } from '../../redux/announcements/announcements.selector';
+import { selectNewsData, selectNewsDataCount, selectCurrentPage, selectPageSize, selectFirstIndex, selectLastIndex } from '../../redux/temp-news-data/temp-news-data.selector';
 
 import { PageContainer, FullListWrapper, Wrapper, ItemContainer, ListItem, PageIndicator, SelectContainer, FormControlContainer } from './official-announcement.styles';
 import TitleContainer from '../title-container/title-container.component';
@@ -12,53 +13,74 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 
-//import { firestore } from '../../firebase/firebase.utils';
+import { fetchNextNewsDataStartAsync, fetchNewsDataStartAsync } from '../../redux/temp-news-data/temp-news-data.actions';
 
-const OfficialAnnouncement = ({annuoncementList, title, history, match}) => {
-    const [page, setPage] = React.useState(1);
-    const [pageSize, setPageSize] = React.useState(10);
-    
-    const pageCount = Math.ceil(annuoncementList.length / pageSize);
-
-    // React.useEffect(() => {
-    //     //let unSubscribeFromSnapshot = null
-        
-    //     const fetchData = async () => {
-    //         const collectionRef = firestore.collection('/news/Y3tLkwHtnxD3Av6WxWnk/official');
-            
-    //         const ordered = collectionRef.orderBy('id', "desc").limit(3);
-            
-    //         ordered.onSnapshot(async snapshot => {
-
-    //             snapshot.docs.map(doc => {
-    //                 return console.log(doc.data())
-    //             })
-    //         });
-    //     } 
-    //     fetchData();
-
-    //     // return function cleanUp() {
-    //     //     unSubscribeFromSnapshot();
-    //     // }    
-    // },[])
-
-
+const OfficialAnnouncement = ({annuoncementList, announcementCount, currentPage, pageSizeNumber, firstIndex, lastIndex, title, history, match, fetchNextNewsDataStartAsync, fetchNewsDataStartAsync }) => {
+    const [page, setPage] = React.useState(currentPage);
+    const [pageSize, setPageSize] = React.useState(pageSizeNumber);
+     
+    const pageCount = Math.ceil(announcementCount / pageSizeNumber);
     const handleClick = (id) => {
-        history.push(`${match.url}/${id}`)
+        history.push(`${match.url}/${id}`);
+    }
+
+    const checkForQuery = (pageNumber) => {
+        const lastIndexNeeded = pageNumber*pageSize;
+        const firstIndexNeeded = lastIndexNeeded-pageSize+1;
+
+        if (lastIndexNeeded > lastIndex || firstIndexNeeded < firstIndex) {
+            return true;
+        } else { 
+            return false;
+        }
     }
 
     const handleChange = (event, value) => {
-        setPage(value);
+        const pagesToFetch = 3;
+        let firstItemIndex = (value-2)*pageSize+1;
+        if ( firstItemIndex < 1 ) {
+            firstItemIndex = 1
+        }
+        const limit = pageSize*pagesToFetch;
+        const collectionName = match.params.category;
+        const check = checkForQuery(value);
+        if ( check) {
+            fetchNextNewsDataStartAsync(collectionName, limit, firstItemIndex, value, pageSize)
+        }
+        setPage(value);   
     }
 
     const handlePageSize = (event) => {
-        setPageSize(event.target.value);
-      };
+        fetchNewsDataStartAsync(match.params.category, event.target.value);
+    };
+
+    const pageToShow = (pageNumber) => {
+        const lastIndexNeeded = pageNumber*pageSize;
+        const firstIndexNeeded = lastIndexNeeded-pageSize+1;
+        if (firstIndexNeeded === firstIndex ) {
+            return 1;
+        }
+        if ( lastIndexNeeded === lastIndex ) {
+            return 3;
+        } else {
+            return 2;
+        }
+    };
 
     const pagination = (myArray, pageNumber, pageSize) => {
-        return myArray.slice((pageNumber -1 ) * pageSize, pageNumber * pageSize );
+        const pageIndex = pageToShow(pageNumber);
+        switch (pageIndex) {
+            case 1:
+                return myArray.slice(0, pageSize);
+            case 2: 
+                return myArray.slice(pageSize, pageSize*2);  
+            case 3: 
+                return myArray.slice(pageSize*2, myArray.length);
+            default: 
+                return myArray;
+        }
     }
-
+    
     return (
         <PageContainer>
             <TitleContainer name={title} color='blue' />
@@ -76,15 +98,14 @@ const OfficialAnnouncement = ({annuoncementList, title, history, match}) => {
                         ))
                     }
                 </FullListWrapper>
-                    <PageIndicator page={page} count={pageCount} onChange={handleChange}/>
-                    
+                    <PageIndicator page={page} count={pageCount} onChange={handleChange}/>           
                     <FormControlContainer>
                         <FormControl variant='outlined'>
                             <InputLabel id="demo-simple-select-label">Page Size</InputLabel>
                             <SelectContainer
                             labelId="demo-simple-select-outlined-label"
                             id="page-size"
-                            value={pageSize}
+                            value={pageSizeNumber}
                             onChange={handlePageSize}
                             label="Page Size"
                             >
@@ -102,8 +123,18 @@ const OfficialAnnouncement = ({annuoncementList, title, history, match}) => {
 };
 
 const mapStateToProps = (state, ownProps) => ({
-    annuoncementList: selectList(ownProps.match.params.category)(state),
+    annuoncementList: selectNewsData(state),
+    announcementCount: selectNewsDataCount(state),
+    currentPage: selectCurrentPage(state),
+    pageSizeNumber: selectPageSize(state),
+    firstIndex: selectFirstIndex(state),
+    lastIndex: selectLastIndex(state),
     title: selectTitle(ownProps.match.params.category)(state)
 })
 
-export default withRouter(connect(mapStateToProps)(OfficialAnnouncement));
+const mapDispatchToProps = dispatch => ({
+    fetchNextNewsDataStartAsync: (collectionName, limit, firstItemIndex, value, pageSize) => dispatch(fetchNextNewsDataStartAsync(collectionName, limit, firstItemIndex, value, pageSize)),
+    fetchNewsDataStartAsync: (collectionName, pageSize) => dispatch(fetchNewsDataStartAsync(collectionName, pageSize))
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(OfficialAnnouncement));

@@ -22,7 +22,6 @@ import TitleContainer from '../title-container/title-container.component';
 import CustomButton from '../custom-button/custom-button.component';
 
 const SlideShow = ({announcementPreview, title, linkUrl, history}) => {
-
     const theme = useTheme();
     const matches = useMediaQuery(theme.breakpoints.down('xs'));
 

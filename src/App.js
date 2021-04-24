@@ -1,29 +1,28 @@
 import React, { useEffect } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { auth, createUserProfile, addCollectionAndDocuments } from './firebase/firebase.utils';
+import MainPage from './pages/mainPage/main-page.component';
 
-import { createStructuredSelector } from 'reselect';
-import { selectCurrentUser } from './redux/user/user.selectors';
-import { selectAll } from './redux/announcements/announcements.selector';
+import { firestore, auth, createUserProfile, getAnnouncementsData, getHeaderData } from './firebase/firebase.utils';
 
 import { ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { theme } from './theme';
 
-import Announcements from './pages/announcements/announcements.component';
-import HeaderContainer from './components/header/header-container.component';
-import HomePage from './pages/homepage/homepage.component';
-import SignInPage from './pages/sign-in-page/sign-in-page.component';
-import Footer from './components/footer/footer.component';
+import WithSpinner from './components/withSpinner/withSpinner.component';
 
 import { setCurrentUser } from './redux/user/user.actions';
+import { initialAnnouncements } from './redux/announcements/announcements.actions';
+import { setHeaderData } from './redux/header/header.actions';
 
-import { MainContainer, PageContainer } from './app.styles';
+const MainPageWithSpinner = WithSpinner(MainPage);
 
-function App ({ currentUser, setCurrentUser, collectionsArray }) {
-  
+function App ({ setCurrentUser, initialAnnouncements, headerData, setHeaderData }) {
+  const [loadingAnnouncements, setloadingAnnouncements] = React.useState(true);
+  const [loadingHeader, setloadingHeader] = React.useState(true);
+  const [loading, setLoading] = React.useState(true);
+
+
   useEffect(() => {
     let unSubscribeFromAuth = null
     unSubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
@@ -42,39 +41,61 @@ function App ({ currentUser, setCurrentUser, collectionsArray }) {
       }
     })
 
-    
+    const loadingState = () => {
+      loadingAnnouncements && loadingHeader ? setLoading(false) : setLoading(true);
+    }
 
+    const fetchHeaderData = async () => {
+      const collectionRef = await firestore.collection('header').get();
+      const data = await getHeaderData(collectionRef);
+      setHeaderData(data);
+      setloadingHeader(false);
+      
+    }
+    fetchHeaderData();
+
+    const fetchAnnouncementsData = () => {
+      const collectionRef = firestore.collection('announcements');
+      collectionRef.onSnapshot( async snapshot => {       
+        const initialData = await getAnnouncementsData(snapshot);
+        initialAnnouncements(initialData);
+        setloadingAnnouncements(false);
+        loadingState();
+      }) 
+    }
+    fetchAnnouncementsData()
+    
     return function cleanUp() {
       unSubscribeFromAuth();
     }    
   },[])
-
+  
+  
   return (
     <MaterialThemeProvider theme={theme}>
       <StyledThemeProvider theme={theme}>
-        <MainContainer>
+        <MainPageWithSpinner isLoading={loading} />
+        { 
+        /* <MainContainer>
           <HeaderContainer/>
           <PageContainer>
             <Switch>
-              <Route exact path='/' component={HomePage} />
-              <Route path='/announcements/:category' component={Announcements} />
+              <Route exact path='/' render={(props) => <HomePageWithSpinner isLoading={loading} {...props} />} />
+              <Route path='/announcements/:category' render={(props) => <AnnouncementsWithSpinner isLoading={loading} {...props} />} />
               <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInPage/>) } />
             </Switch>
           </PageContainer>
           <Footer />
-        </MainContainer>
+        </MainContainer> */}
       </StyledThemeProvider>
     </MaterialThemeProvider>
   );
 }
 
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser,
-  collectionsArray: selectAll
-});
-
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user))
+  setCurrentUser: user => dispatch(setCurrentUser(user)),
+  initialAnnouncements: announcements => dispatch(initialAnnouncements(announcements)),
+  setHeaderData: header => dispatch(setHeaderData(header))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

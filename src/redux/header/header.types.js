@@ -1,4 +1,5 @@
 export const headerActionTypes = {
+    SET_HEADER_DATA: `SET_HEADER_DATA`,
     GET_QUICK_LINKS: 'GET_QUICK_LINKS',
     GET_TAB_ITEMS_DATA: 'GET_TAB_ITEMS_DATA'
 }

@@ -16,7 +16,7 @@ export const selectSpecialLinkUrl = createSelector(
 
 export const selectSpecialPreview = createSelector(
     [selectSpecialAnnouncements],
-    special => Object.keys(special.content).map(key => special.content[key]).slice(0, 4)
+    special => special ? Object.keys(special.content).map(key => special.content[key]).slice(0, 4) : []
 );
 
 export const selectTitles = createSelector(
@@ -33,7 +33,7 @@ export const selectPreviews= createSelector(
     [selectAnnouncements],
     announcements => {
         const contents = Object.keys(announcements).map(key => announcements[key].content)
-        return contents.map(item => Object.keys(item).map(key => item[key]).slice(0, 10))
+        return contents.map(item => Object.keys(item).map(key => item[key]).slice(0, 6))
     }
 );
 
@@ -57,5 +57,5 @@ export const selectTitle = category =>
 
 export const selectAll = createSelector(
     [selectAnnouncements],
-    announcements => Object.keys(announcements).map(key => announcements[key])
+    announcements => announcements ? Object.keys(announcements).map(key => announcements[key]) : []
 )

@@ -1,12 +1,15 @@
 import { announcementsActionTypes } from './announcements.types';
 
-import { bankNews } from '../../components/data/news.data';
-const INITIAL_STATE = bankNews;
+const INITIAL_STATE = null;
 
 const announcementsReducer = ( state = INITIAL_STATE, action ) => {
     switch (action.type) {
-        case announcementsActionTypes.GET_PREVIEW:
-            return state;
+        case announcementsActionTypes.GET_INITIAL:
+            const data  = action.payload
+            return {
+                ...state,
+                ...data
+            };
         case announcementsActionTypes.GET_LIST: 
             return state;
         case announcementsActionTypes.GET_FULL_DATA: 

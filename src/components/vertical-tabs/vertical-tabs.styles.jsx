@@ -13,8 +13,9 @@ export const TabsContainer = styled(({ ...props }) => <Tabs orientation="vertica
     display: flex;
     flex-direction: row-reverse;
     border-left: 1px solid ${props => props.theme.palette.divider};
-    height: 300px;
+    height: 330px;
     width: 20%;
+    
 `;
 
 export const TabContainer = styled(Tab)`
@@ -23,7 +24,7 @@ export const TabContainer = styled(Tab)`
 `;
 
 export const TabPanelContainer =  styled.div`
-    height: 300px;
+    height: 330px;
     overflow-y: auto;
     width: 80%;
 

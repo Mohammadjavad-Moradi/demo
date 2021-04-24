@@ -1,7 +1,5 @@
 import React from 'react';
 
-import { firestore, getAnnouncementsData } from '../../firebase/firebase.utils';
-
 import { HomePageContainer } from './homepage.styles';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -18,19 +16,6 @@ const HomePage = () => {
     const theme = useTheme();
     const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
 
-    React.useEffect( () => {
-        const fetchAnnouncementsData = () => {
-            const collectionRef = firestore.collection('announcements');
-            collectionRef.onSnapshot( async snapshot => {
-                
-                getAnnouncementsData(snapshot)
-                
-            }) 
-        }
-        fetchAnnouncementsData()
-        
-    },[])
-
     return (
         <HomePageContainer>
             <SlideShow />
@@ -42,6 +27,5 @@ const HomePage = () => {
         </HomePageContainer>
     )
 }
-
 
 export default HomePage;
