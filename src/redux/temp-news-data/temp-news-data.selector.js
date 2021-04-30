@@ -37,10 +37,11 @@ export const selectLastIndex = createSelector(
     tempNewsData => tempNewsData.lastIndex
 );
 
-export const selectIsNewsDataLoaded = createSelector(
-    [selectTempNewsData],
-    tempNewsData => !!tempNewsData.newsData
-);
+export const selectIsNewsDataLoaded = currentCategory => 
+    createSelector(
+        [selectTempNewsData],
+        tempNewsData => !!tempNewsData.newsData === false || tempNewsData.category !== currentCategory ? true : false
+    );
 
 export const selectCategory = createSelector(
     [selectTempNewsData],

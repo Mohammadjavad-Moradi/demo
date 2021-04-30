@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { selectTitle } from '../../redux/announcements/announcements.selector';
-import { selectNewsData, selectNewsDataCount, selectCurrentPage, selectPageSize, selectFirstIndex, selectLastIndex } from '../../redux/temp-news-data/temp-news-data.selector';
+import { selectNewsData, selectNewsDataCount, selectCurrentPage, selectPageSize, selectFirstIndex, selectLastIndex, selectCategory } from '../../redux/temp-news-data/temp-news-data.selector';
 
 import { PageContainer, FullListWrapper, Wrapper, ItemContainer, ListItem, PageIndicator, SelectContainer, FormControlContainer } from './official-announcement.styles';
 import TitleContainer from '../title-container/title-container.component';
@@ -15,10 +15,14 @@ import FormControl from '@material-ui/core/FormControl';
 
 import { fetchNextNewsDataStartAsync, fetchNewsDataStartAsync } from '../../redux/temp-news-data/temp-news-data.actions';
 
-const OfficialAnnouncement = ({annuoncementList, announcementCount, currentPage, pageSizeNumber, firstIndex, lastIndex, title, history, match, fetchNextNewsDataStartAsync, fetchNewsDataStartAsync }) => {
+const OfficialAnnouncement = ({annuoncementList, announcementCount, currentPage, pageSizeNumber, firstIndex, lastIndex, title, currentCategory, history, match, fetchNextNewsDataStartAsync, fetchNewsDataStartAsync }) => {
     const [page, setPage] = React.useState(currentPage);
     const [pageSize, setPageSize] = React.useState(pageSizeNumber);
-     
+    
+    // if (currentCategory !== match.params.category) {
+    //     annuoncementList = []
+    // }
+
     const pageCount = Math.ceil(announcementCount / pageSizeNumber);
     const handleClick = (id) => {
         history.push(`${match.url}/${id}`);
@@ -129,7 +133,8 @@ const mapStateToProps = (state, ownProps) => ({
     pageSizeNumber: selectPageSize(state),
     firstIndex: selectFirstIndex(state),
     lastIndex: selectLastIndex(state),
-    title: selectTitle(ownProps.match.params.category)(state)
+    title: selectTitle(ownProps.match.params.category)(state),
+    currentCategory: selectCategory(state)
 })
 
 const mapDispatchToProps = dispatch => ({

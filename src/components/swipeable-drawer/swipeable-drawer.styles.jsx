@@ -1,12 +1,11 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
 
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIosOutlinedIcon from '@material-ui/icons/ArrowBackIosOutlined';
 import ArrowForwardOutlinedIcon from '@material-ui/icons/ArrowForwardOutlined';
 import List from '@material-ui/core/List';
 
-export const LinkDrawer = styled(Link)`
+export const LinkDrawer = styled.div`
     text-decoration: none;
     color: inherit;
     &:visited {

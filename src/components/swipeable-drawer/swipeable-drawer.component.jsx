@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { createStructuredSelector } from 'reselect';
 import { selectQuickLinks, selectTabItems } from '../../redux/header/header.selectors';
@@ -117,9 +118,11 @@ const SwipeableTemporaryDrawer = ({ items, quickLinks }) => {
               value={index}
               onClick={toggleDrawer(false)}
               onKeyDown={toggleDrawer(false)}
+              component={Link}
+              to={el.linkUrl}
             >
               <ListItemText>
-                <LinkDrawer to={el.linkUrl}>{el.name}</LinkDrawer>
+                <LinkDrawer >{el.name}</LinkDrawer>
               </ListItemText>
             </ListItem>
             :

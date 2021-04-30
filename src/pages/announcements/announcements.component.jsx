@@ -2,7 +2,6 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
-import { createStructuredSelector } from 'reselect';
 import { selectIsNewsDataFetching, selectIsNewsDataLoaded, selectPageSize } from '../../redux/temp-news-data/temp-news-data.selector';
 
 import { fetchNewsDataStartAsync } from '../../redux/temp-news-data/temp-news-data.actions';
@@ -20,20 +19,20 @@ const Announcements = ({ match, isFetching, fetchNewsDataStartAsync, isNewsDataL
             await fetchNewsDataStartAsync(match.params.category, defaultPageSize);
         }
         fetchingData();
-    }, [fetchNewsDataStartAsync, match.url, defaultPageSize])
+    }, [fetchNewsDataStartAsync, match.params.category, defaultPageSize])
 
     return (
         <React.Fragment>
-            <Route exact path={`${match.path}`} render={props => (<OfficialAnnouncementWithSpinner {...props} isLoading={!isNewsDataLoaded}/>)}/>
+            <Route exact path={`${match.path}`} render={props => (<OfficialAnnouncementWithSpinner {...props} isLoading={isNewsDataLoaded}/>)}/>
             <Route path={`${match.path}/:newsId`} render={props => (<AnnoucementFullViewWithSpinner {...props} isLoading={isFetching}/>)}/>
         </React.Fragment>
     )
 }
 
-const mapStateToProps = createStructuredSelector({
-    isFetching: selectIsNewsDataFetching,
-    isNewsDataLoaded: selectIsNewsDataLoaded,
-    defaultPageSize: selectPageSize
+const mapStateToProps = (state, ownProps) => ({
+    isFetching: selectIsNewsDataFetching(state),
+    isNewsDataLoaded: selectIsNewsDataLoaded(ownProps.match.params.category)(state),
+    defaultPageSize: selectPageSize(state)
 })
 
 const mapDispatchToProps = dispatch => ({

@@ -22,7 +22,6 @@ export const fetchNewsDataFailure = errorMessage => ({
 })
 
 export const fetchNewsDataStartAsync = (collectionName, pageSize) => {
-    console.log(collectionName, pageSize)
     return async dispatch => {
         const getAllRef = firestore.collection(`announcements/${collectionName}/contents`);
         const count = await getAllRef.get().then(res => {
