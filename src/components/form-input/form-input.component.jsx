@@ -1,7 +1,5 @@
 import React from 'react';
 
-import styles from './form-input.module.scss';
-
 const FormInput = ({label, handleChange, ...otherProps}) => (
     <div>
         <input onChange={handleChange} {...otherProps} />

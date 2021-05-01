@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Route } from 'react-router-dom';
 
@@ -6,9 +6,12 @@ import { selectIsNewsDataFetching, selectIsNewsDataLoaded, selectPageSize } from
 
 import { fetchNewsDataStartAsync } from '../../redux/temp-news-data/temp-news-data.actions';
 
-import OfficialAnnouncement from '../../components/official-announcment-list/official-announcement.component';
-import AnnoucementFullView from '../../components/annoucement-full-view/annoucement-full-view.component';
+//import OfficialAnnouncement from '../../components/official-announcment-list/official-announcement.component';
+//import AnnoucementFullView from '../../components/annoucement-full-view/annoucement-full-view.component';
 import WithSpinner from '../../components/withSpinner/withSpinner.component';
+
+const OfficialAnnouncement = lazy(() => import('../../components/official-announcment-list/official-announcement.component'))
+const AnnoucementFullView = lazy(() => import('../../components/annoucement-full-view/annoucement-full-view.component'))
 
 const OfficialAnnouncementWithSpinner = WithSpinner(OfficialAnnouncement);
 const AnnoucementFullViewWithSpinner = WithSpinner(AnnoucementFullView);
@@ -23,8 +26,10 @@ const Announcements = ({ match, isFetching, fetchNewsDataStartAsync, isNewsDataL
 
     return (
         <React.Fragment>
-            <Route exact path={`${match.path}`} render={props => (<OfficialAnnouncementWithSpinner {...props} isLoading={isNewsDataLoaded}/>)}/>
-            <Route path={`${match.path}/:newsId`} render={props => (<AnnoucementFullViewWithSpinner {...props} isLoading={isFetching}/>)}/>
+            <Suspense fallback={<div>...loading</div>}>
+                <Route exact path={`${match.path}`} render={props => (<OfficialAnnouncementWithSpinner {...props} isLoading={isNewsDataLoaded}/>)}/>
+                <Route path={`${match.path}/:newsId`} render={props => (<AnnoucementFullViewWithSpinner {...props} isLoading={isFetching}/>)}/>
+            </Suspense>
         </React.Fragment>
     )
 }

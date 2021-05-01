@@ -1,13 +1,13 @@
 import React from 'react';
 
-import styles from './sign-in-page.module.scss';
-
 import SignIn from '../../components/sign-in/sign-in.component';
 
+import { SignInPageWrapper } from './sign-in-page.styles';
+
 const SignInPage = () => (
-    <div className={styles.signInPage}>
+    <SignInPageWrapper>
         <SignIn />
-    </div>
+    </SignInPageWrapper>
 );
 
 export default SignInPage;

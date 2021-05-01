@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 
 import MainPage from './pages/mainPage/main-page.component';
+import ErrorBoundary from './components/error-boundary/error-boundary.component';
 
 import { firestore, auth, createUserProfile, getAnnouncementsData, getHeaderData } from './firebase/firebase.utils';
 
@@ -68,25 +69,15 @@ function App ({ setCurrentUser, initialAnnouncements, headerData, setHeaderData 
     return function cleanUp() {
       unSubscribeFromAuth();
     }    
-  },[])
+  },[initialAnnouncements, setCurrentUser, setHeaderData])
   
   
   return (
     <MaterialThemeProvider theme={theme}>
       <StyledThemeProvider theme={theme}>
-        <MainPageWithSpinner isLoading={loading} />
-        { 
-        /* <MainContainer>
-          <HeaderContainer/>
-          <PageContainer>
-            <Switch>
-              <Route exact path='/' render={(props) => <HomePageWithSpinner isLoading={loading} {...props} />} />
-              <Route path='/announcements/:category' render={(props) => <AnnouncementsWithSpinner isLoading={loading} {...props} />} />
-              <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInPage/>) } />
-            </Switch>
-          </PageContainer>
-          <Footer />
-        </MainContainer> */}
+        <ErrorBoundary>
+          <MainPageWithSpinner isLoading={loading} />
+        </ErrorBoundary>
       </StyledThemeProvider>
     </MaterialThemeProvider>
   );
