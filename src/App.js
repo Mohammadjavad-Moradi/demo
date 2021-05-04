@@ -18,7 +18,7 @@ import { setHeaderData } from './redux/header/header.actions';
 
 const MainPageWithSpinner = WithSpinner(MainPage);
 
-function App ({ setCurrentUser, initialAnnouncements, headerData, setHeaderData }) {
+function App ({ setCurrentUser, initialAnnouncements, setHeaderData }) {
   const [loadingAnnouncements, setloadingAnnouncements] = React.useState(true);
   const [loadingHeader, setloadingHeader] = React.useState(true);
   const [loading, setLoading] = React.useState(true);
@@ -70,7 +70,6 @@ function App ({ setCurrentUser, initialAnnouncements, headerData, setHeaderData 
       unSubscribeFromAuth();
     }    
   },[initialAnnouncements, setCurrentUser, setHeaderData])
-  
   
   return (
     <MaterialThemeProvider theme={theme}>

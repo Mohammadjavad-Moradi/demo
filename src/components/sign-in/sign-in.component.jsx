@@ -26,7 +26,9 @@ const SignIn = () => {
 
 
     const handleSubmit = event => {
+        console.log(`submitted`)
         setValues({ ...values, userName: '', password: ''});
+
     };
     
     const handleChange = (prop) => (event) => {
@@ -47,7 +49,7 @@ const SignIn = () => {
             <TitleContainer name='ورود کاربر' color='blue'/>
             <SignInBox>
                 <form onSubmit={handleSubmit}>
-                    <FormControlContainer>
+                    <FormControlContainer >
                         <Grid container spacing={1} alignItems="flex-end">
                             <Grid item>
                                 <AccountCircle />

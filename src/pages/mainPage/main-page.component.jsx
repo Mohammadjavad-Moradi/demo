@@ -7,6 +7,7 @@ import { MainContainer, PageContainer } from './main-page.styles';
 import HeaderContainer from '../../components/header/header-container.component';
 import HomePage from '../homepage/homepage.component';
 import Footer from '../../components/footer/footer.component';
+import Spinner from '../../components/spinner/spinner.component';
 
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
@@ -21,7 +22,7 @@ const MainPage = ({ currentUser }) => {
             <PageContainer>
                 <Switch>
                     <Route exact path='/' render={(props) => <HomePage {...props} />} />
-                    <Suspense fallback={<div>...loading</div>}>
+                    <Suspense fallback={<Spinner />}>
                         <Route path='/announcements/:category' render={(props) => <Announcements {...props} />} />
                         <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInPage />)} />
                     </Suspense>

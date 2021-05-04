@@ -6,8 +6,7 @@ import { selectIsNewsDataFetching, selectIsNewsDataLoaded, selectPageSize } from
 
 import { fetchNewsDataStartAsync } from '../../redux/temp-news-data/temp-news-data.actions';
 
-//import OfficialAnnouncement from '../../components/official-announcment-list/official-announcement.component';
-//import AnnoucementFullView from '../../components/annoucement-full-view/annoucement-full-view.component';
+import Spinner from '../../components/spinner/spinner.component';
 import WithSpinner from '../../components/withSpinner/withSpinner.component';
 
 const OfficialAnnouncement = lazy(() => import('../../components/official-announcment-list/official-announcement.component'))
@@ -26,7 +25,7 @@ const Announcements = ({ match, isFetching, fetchNewsDataStartAsync, isNewsDataL
 
     return (
         <React.Fragment>
-            <Suspense fallback={<div>...loading</div>}>
+            <Suspense fallback={<Spinner />}>
                 <Route exact path={`${match.path}`} render={props => (<OfficialAnnouncementWithSpinner {...props} isLoading={isNewsDataLoaded}/>)}/>
                 <Route path={`${match.path}/:newsId`} render={props => (<AnnoucementFullViewWithSpinner {...props} isLoading={isFetching}/>)}/>
             </Suspense>
