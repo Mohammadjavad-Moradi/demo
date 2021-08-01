@@ -9,11 +9,14 @@ const config = {
     storageBucket: "cbi-intranet.appspot.com",
     messagingSenderId: "471825400147",
     appId: "1:471825400147:web:06e1e6ced1a875092f61a6",
-    measurementId: "G-E2H4L1NLFG"
+    measurementId: "G-E2H4L1NLFG",
+    storageBucket: 'gs://cbi-intranet.appspot.com'
 };
+
 
 firebase.initializeApp(config);
 
+//const storage = firebase.storage();
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 

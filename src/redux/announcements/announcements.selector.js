@@ -1,4 +1,3 @@
-
 import { createSelector } from 'reselect';
 
 const selectAnnouncements = state => state.announcements;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import SignIn from '../../components/sign-in/sign-in.component';
+import SignIn from '../../components/authentication/sign-in/sign-in.component';
 
 import { SignInPageWrapper } from './sign-in-page.styles';
 

@@ -6,11 +6,11 @@ import { selectIsNewsDataFetching, selectIsNewsDataLoaded, selectPageSize } from
 
 import { fetchNewsDataStartAsync } from '../../redux/temp-news-data/temp-news-data.actions';
 
-import Spinner from '../../components/spinner/spinner.component';
-import WithSpinner from '../../components/withSpinner/withSpinner.component';
+import Spinner from '../../components/atom-components/spinner/spinner.component';
+import WithSpinner from '../../components/atom-components/withSpinner/withSpinner.component';
 
-const OfficialAnnouncement = lazy(() => import('../../components/official-announcment-list/official-announcement.component'))
-const AnnoucementFullView = lazy(() => import('../../components/annoucement-full-view/annoucement-full-view.component'))
+const OfficialAnnouncement = lazy(() => import('../../components/newsPage-components/official-announcment-list/official-announcement.component'))
+const AnnoucementFullView = lazy(() => import('../../components/newsPage-components/annoucement-full-view/annoucement-full-view.component'))
 
 const OfficialAnnouncementWithSpinner = WithSpinner(OfficialAnnouncement);
 const AnnoucementFullViewWithSpinner = WithSpinner(AnnoucementFullView);

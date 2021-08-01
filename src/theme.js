@@ -7,13 +7,14 @@ const primary = {
 };
 
 const secondary = {
-    cbiGrey: 'rgba(90,94,102,1)',
-    cbiDarkGrey: 'rgba(66,66,66,1)',
-    cbiLightGrey: 'rgba(226,226,226,1)'
+    charlestonGreen: 'rgba(33, 37, 41,1)',
+    celadonBlue: 'rgba(69, 123, 157,1)',
+    prussianBlue: 'rgba(29, 53, 87,1)',
+    powderBlue: 'rgba(168, 218, 220,1)'
 }
 
 const button = {
-    main: `rgba(214,85,50,1)`
+    main: `rgba(0, 175, 185,1)`
 }
 
 const common = {
@@ -30,9 +31,10 @@ export const theme = createMuiTheme({
             light: primary.cbiLightBlue
         },
         secondary: {
-            main: secondary.cbiGrey,
-            dark: secondary.cbiDarkGrey,
-            light: secondary.cbiLightGrey
+            charlestonGreen: secondary.charlestonGreen,
+            main: secondary.celadonBlue,
+            dark: secondary.prussianBlue,
+            light: secondary.powderBlue
         },
         common: {
             black: common.black,

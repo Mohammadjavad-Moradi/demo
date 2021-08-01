@@ -2,29 +2,38 @@ import React, { lazy, Suspense } from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import { useTheme } from '@material-ui/core/styles';
+
 import { MainContainer, PageContainer } from './main-page.styles';
 
-import HeaderContainer from '../../components/header/header-container.component';
+import HeaderContainer from '../../components/header-components/header-container/header-container.component';
 import HomePage from '../homepage/homepage.component';
-import Footer from '../../components/footer/footer.component';
-import Spinner from '../../components/spinner/spinner.component';
+import Footer from '../../components/footer-components/footer/footer.component';
+import Spinner from '../../components/atom-components/spinner/spinner.component';
 
 import { createStructuredSelector } from 'reselect';
 import { selectCurrentUser } from '../../redux/user/user.selectors';
 
 const Announcements = lazy(() => import('../announcements/announcements.component'));
 const SignInPage = lazy(() => import('../sign-in-page/sign-in-page.component'));
+const ECommerce = lazy(() => import('../e-commerce/e-commerce.component'));
+const SignUpPage = lazy(() => import('../sign-up-page/sign-up-page.component'));
 
 const MainPage = ({ currentUser }) => {
+    const theme = useTheme();
+    const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
     return (
         <MainContainer>
             <HeaderContainer />
-            <PageContainer>
+            <PageContainer xs={matchesXs ? 'true' : undefined}>
                 <Switch>
                     <Route exact path='/' render={(props) => <HomePage {...props} />} />
                     <Suspense fallback={<Spinner />}>
                         <Route path='/announcements/:category' render={(props) => <Announcements {...props} />} />
-                        <Route exact path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInPage />)} />
+                        <Route path='/ecommerce' render={(props) => <ECommerce {...props} />} />
+                        <Route path='/signin' render={() => currentUser ? (<Redirect to='/' />) : (<SignInPage />)} />
+                        <Route path='/signup' render={() => currentUser ? (<Redirect to='/' />) : (<SignUpPage />)} />
                     </Suspense>
                 </Switch>
             </PageContainer>
