@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
@@ -13,28 +14,29 @@ import LockRoundedIcon from '@material-ui/icons/LockRounded';
 import CustomButton from '../../atom-components/custom-button/custom-button.component';
 import TitleContainer from '../../atom-components/title-container/title-container.component';
 
-import { signInWithGoogle, auth } from '../../../firebase/firebase.utils';
+import { googleSignInStart, emailSignInStart } from '../../../redux/user/user.actions';
 
 import { SignInBox, ButtonsConteiner, FormControlContainer, InputLabelContainer, SignUpText, SignUpLink } from './sign-in.styles';
 
-const SignIn = () => {
+const SignIn = ({googleSignInStart, emailSignInStart}) => {
     const [values, setValues] = React.useState({
-        userName: '',
+        email: '',
         password: '',
         showPassword: false
     })
 
 
     const handleSubmit = async event => {
-        console.log(`submitted`)
+        //console.log(`submitted`)
         //event.preventDefault();
-        try {
-            await auth.signInWithEmailAndPassword( values.userName, values.password );   
-            setValues({ ...values, userName: '', password: ''});
-        }   catch (error) {
-            console.log(error)
-        } 
-
+        // try {
+        //     await auth.signInWithEmailAndPassword( values.userName, values.password );   
+        //     setValues({ ...values, userName: '', password: ''});
+        // }   catch (error) {
+        //     console.log(error)
+        // } 
+        console.log(values.email)
+        emailSignInStart(values.email, values.password);
     };
     
     const handleChange = (prop) => (event) => {
@@ -61,7 +63,7 @@ const SignIn = () => {
                                 <AccountCircle />
                             </Grid>
                             <Grid item>
-                                <TextField id="input-with-icon-grid" label="User Name" value={values.userName} required onChange={handleChange('userName')}/>
+                                <TextField id="input-with-icon-grid" label="Email" value={values.email} required onChange={handleChange('email')}/>
                             </Grid>
                         </Grid>
                     </FormControlContainer>
@@ -94,7 +96,7 @@ const SignIn = () => {
                     </FormControlContainer>
                     <ButtonsConteiner >
                         <CustomButton type='submit' variant='contained' color='secondary' size='medium' handleClick={handleSubmit}>Sign in</CustomButton>
-                        <CustomButton variant='contained' color='secondary' size='medium' handleClick={signInWithGoogle}>Sign in with google</CustomButton>
+                        <CustomButton type='button' variant='contained' color='secondary' size='medium' handleClick={googleSignInStart}>Sign in with google</CustomButton>
                     </ButtonsConteiner>
                     <SignUpText>or <SignUpLink to='/signup'>sign up</SignUpLink> for free</SignUpText>
                 </form>
@@ -103,5 +105,10 @@ const SignIn = () => {
     );
 }
 
-export default SignIn;
+const mapDispatchToProps = dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: (email, password) => dispatch(emailSignInStart({email, password})),
+})
+
+export default connect(null, mapDispatchToProps)(SignIn);
 

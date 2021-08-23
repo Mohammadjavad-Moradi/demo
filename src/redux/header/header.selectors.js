@@ -1,18 +1,18 @@
 import { createSelector } from 'reselect';
 
-const selectHeader = state => state.header;
+const selectHeader = state => state.header.headerData;
 
 export const selectQuickLinks = createSelector(
     [selectHeader],
-    header => header ? header.quickLinksData : []
+    headerData => headerData ? headerData.quickLinksData : []
 );
 
 export const selectTabItems = createSelector(
     [selectHeader],
-    header => header ? header.tabItemsData.contents : []
+    headerData => headerData ? headerData.tabItemsData.contents : []
 );
 
 export const selectHeaderData = createSelector(
     [selectHeader],
-    header => header ? Object.keys(header).map( key => header[key]) : []
+    headerData => headerData ? Object.keys(headerData).map( key => headerData[key]) : []
 )

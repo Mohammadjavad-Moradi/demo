@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+export const Wrapper = styled.div`
+    margin-right: 1em;
+`;
+
 export const ProfileContainer = styled(({...props}) => <div {...props} />)`
     text-align: center;
     line-height: ${props => props.xs ? '3em' : '5em'};

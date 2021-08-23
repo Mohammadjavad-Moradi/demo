@@ -2,9 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { auth } from '../../../firebase/firebase.utils';
+import { signOutStart } from '../../../redux/user/user.actions';
 
-import ShoppingCard from '../../e-commerce-components/shopping-card/shopping-card.component'
+import ShoppingCard from '../../e-commerce-components/shopping-card/shopping-card.component';
 
 import Button from '@material-ui/core/Button';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -13,12 +13,12 @@ import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import { UserProfileWrapper, ButtonGroupContainer, ProfileName } from './user-profile.styles';
 
 
-const UserProfile = ({currentUser, history}) => {
+const UserProfile = ({currentUser, history, signOutStart}) => {
     const toShoppingBag = () => {
         history.push('/ecommerce/shoppingbag')
     }
     const handleClick = () => {
-        auth.signOut();
+        signOutStart();
     }
 
   return (
@@ -43,4 +43,8 @@ const mapStateToProps = state => ({
     currentUser: state.user.currentUser
 });
 
-export default withRouter(connect(mapStateToProps)(UserProfile));
+const mapDispatchToProps = dispatch => ({
+    signOutStart: () => dispatch(signOutStart())
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UserProfile));

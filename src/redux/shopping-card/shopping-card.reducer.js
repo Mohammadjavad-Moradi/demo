@@ -24,6 +24,11 @@ const shoppingCardReducer = (state = INITIAL_STATE, action) => {
                 ...state,
                 items: setQuantity(state.items, action.payload)
             }
+        case shoppingCardActionTypes.CLEAR_CARD:
+            return {
+                ...state,
+                items: []
+            }
         default:
                 return state;
     };

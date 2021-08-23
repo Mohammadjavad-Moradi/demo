@@ -4,9 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import UserProfile from '../user-profile/user-profile.component';
 
-import { ProfileContainer, ProfileName } from './profile.styles';
-
-import { auth } from '../../../firebase/firebase.utils';
+import { Wrapper, ProfileContainer, ProfileName } from './profile.styles';
 
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { useTheme } from '@material-ui/core/styles';
@@ -21,7 +19,7 @@ const Profile = ({ currentUser, history }) => {
     }
 
     return (
-        <div>
+        <Wrapper>
             {
                 currentUser ?
                     <UserProfile />
@@ -32,7 +30,7 @@ const Profile = ({ currentUser, history }) => {
                     </ProfileName>
                 </ProfileContainer> 
             }
-        </div>
+        </Wrapper>
     )
 };
 

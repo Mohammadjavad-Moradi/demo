@@ -1,19 +1,33 @@
 import { announcementsActionTypes } from './announcements.types';
 
-const INITIAL_STATE = null;
+const INITIAL_STATE = {
+    announcementsData: null,
+    isFetching: false,
+    error: null,
+    fetched: false
+};
 
 const announcementsReducer = ( state = INITIAL_STATE, action ) => {
     switch (action.type) {
-        case announcementsActionTypes.GET_INITIAL:
-            const data  = action.payload
+        case announcementsActionTypes.GET_INITIAL_ANNOUNCEMENTS_START:
             return {
                 ...state,
-                ...data
+                isFetching: true
+            }
+        case announcementsActionTypes.GET_INITIAL_ANNOUNCEMENTS_SUCCESS:
+            return {
+                ...state,
+                announcementsData: action.payload,
+                isFetching: false,
+                error: null,
+                fetched: true
             };
-        case announcementsActionTypes.GET_LIST: 
-            return state;
-        case announcementsActionTypes.GET_FULL_DATA: 
-            return state;
+        case announcementsActionTypes.GET_INITIAL_ANNOUNCEMENTS_FAILURE:
+            return {
+                ...state,
+                isFetching: false,
+                error: action.payload
+            }
         default:
             return state;
     }

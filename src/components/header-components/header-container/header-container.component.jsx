@@ -24,7 +24,7 @@ import SwipeableTemporaryDrawer from '../swipeable-drawer/swipeable-drawer.compo
 import QuickLinksSlider from '../quick-links-slider/quick-links-slider.component';
 
 const HeaderContainer = ({ quickLinks }) => {
-    
+
     const theme = useTheme();
     const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
     const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
@@ -53,6 +53,7 @@ const HeaderContainer = ({ quickLinks }) => {
                         <LogoContainer value={value} onClick={() => setValue(0)} xs={matchesXs ? 'true' : undefined}/>
                     </Link>
                 </HeaderBar>
+                <SwipeableTemporaryDrawer/>
                 <TabsContainer value={value} onChange={handleChange}>
                     {
                         matchesXs ?
@@ -65,8 +66,7 @@ const HeaderContainer = ({ quickLinks }) => {
                 </TabsContainer>
             </OptionContainer>
             <OptionContainer>            
-                <Profile/>
-                <SwipeableTemporaryDrawer/>
+                <Profile/>                
             </OptionContainer>
             
         </ToolBarContainer>

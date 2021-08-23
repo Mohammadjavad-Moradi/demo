@@ -1,14 +1,15 @@
 import { headerActionTypes } from './header.types';
 
-export const setHeaderData = headerData => ({
-    type: headerActionTypes.SET_HEADER_DATA,
+export const fetchHeaderDataStart = () => ({
+    type: headerActionTypes.FETCH_HEADER_DATA_START
+});
+
+export const fetchHeaederDataSuccess = headerData => ({
+    type: headerActionTypes.FETCH_HEADER_DATA_SUCCESS,
     payload: headerData
 });
 
-export const quickLinks = () => ({
-    type: headerActionTypes.GET_QUICK_LINKS
+export const fetchHeaderDataFailure = error => ({
+    type: headerActionTypes.FETCH_HEADER_DATA_FAILURE,
+    payload: error
 });
-
-export const tabItemsData = () => ({
-    type: headerActionTypes.GET_TAB_ITEMS_DATA
-})

@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
-const selectAnnouncements = state => state.announcements;
-const selectSpecialAnnouncements = state => state.announcements.special;
+const selectAnnouncements = state => state.announcements.announcementsData;
+const selectSpecialAnnouncements = state => state.announcements.announcementsData.special;
 
 export const selectSpecialTitle = createSelector(
     [selectSpecialAnnouncements],

@@ -4,88 +4,45 @@ import { connect } from 'react-redux';
 import MainPage from './pages/mainPage/main-page.component';
 import ErrorBoundary from './components/atom-components/error-boundary/error-boundary.component';
 
-import { firestore, auth, createUserProfile, getAnnouncementsData, getHeaderData } from './firebase/firebase.utils';
-
 import { ThemeProvider as MaterialThemeProvider } from '@material-ui/core/styles';
 import { ThemeProvider as StyledThemeProvider } from 'styled-components';
 import { theme } from './theme';
 
 import WithSpinner from './components/atom-components/withSpinner/withSpinner.component';
 
-import { setCurrentUser } from './redux/user/user.actions';
-import { initialAnnouncements } from './redux/announcements/announcements.actions';
-import { setHeaderData } from './redux/header/header.actions';
+import { checkUserSession } from './redux/user/user.actions';
+import { getInitialAnnouncementsStart } from './redux/announcements/announcements.actions';
+import { fetchHeaderDataStart } from './redux/header/header.actions';
 
 const MainPageWithSpinner = WithSpinner(MainPage);
 
-function App ({ setCurrentUser, initialAnnouncements, setHeaderData }) {
-  const [loadingAnnouncements, setloadingAnnouncements] = React.useState(true);
-  const [loadingHeader, setloadingHeader] = React.useState(true);
-  const [loading, setLoading] = React.useState(true);
-
-
+function App ({ getInitialAnnouncementsStart, fetchHeaderDataStart, checkUserSession, headerFetched, announcementsFetched }) {
   useEffect(() => {
-    let unSubscribeFromAuth = null
-    unSubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-      const userRef = await createUserProfile(userAuth);
-
-      if(userAuth) {
-        userRef.onSnapshot(snapshot => {
-          setCurrentUser({
-              id: snapshot.id,
-            ...snapshot.data()}
-          )
-        })
-        
-      } else {
-        setCurrentUser(userAuth)
-      }
-    })
-
-    const loadingState = () => {
-      loadingAnnouncements && loadingHeader ? setLoading(false) : setLoading(true);
-    }
-
-    const fetchHeaderData = async () => {
-      const collectionRef = await firestore.collection('header').get();
-      const data = await getHeaderData(collectionRef);
-      setHeaderData(data);
-      setloadingHeader(false);
-      
-    }
-    fetchHeaderData();
-
-    const fetchAnnouncementsData = () => {
-      const collectionRef = firestore.collection('announcements');
-      collectionRef.onSnapshot( async snapshot => {       
-        const initialData = await getAnnouncementsData(snapshot);
-        initialAnnouncements(initialData);
-        setloadingAnnouncements(false);
-        loadingState();
-      }) 
-    }
-    fetchAnnouncementsData()
-    
-    return function cleanUp() {
-      unSubscribeFromAuth();
-    }    
-  },[initialAnnouncements, setCurrentUser, setHeaderData])
+    checkUserSession()
+    fetchHeaderDataStart();
+    getInitialAnnouncementsStart();
+  },[checkUserSession, fetchHeaderDataStart, getInitialAnnouncementsStart]);
   
   return (
     <MaterialThemeProvider theme={theme}>
       <StyledThemeProvider theme={theme}>
         <ErrorBoundary>
-          <MainPageWithSpinner isLoading={loading} />
+          <MainPageWithSpinner isLoading={headerFetched && announcementsFetched ? false : true} />
         </ErrorBoundary>
       </StyledThemeProvider>
     </MaterialThemeProvider>
   );
 }
 
+const mapStateToProps = state => ({
+  headerFetched: state.header.fetched,
+  announcementsFetched: state.announcements.fetched
+})
+
 const mapDispatchToProps = dispatch => ({
-  setCurrentUser: user => dispatch(setCurrentUser(user)),
-  initialAnnouncements: announcements => dispatch(initialAnnouncements(announcements)),
-  setHeaderData: header => dispatch(setHeaderData(header))
+  fetchHeaderDataStart: header => dispatch(fetchHeaderDataStart(header)),
+  checkUserSession: () => dispatch(checkUserSession()),
+  getInitialAnnouncementsStart: () => dispatch(getInitialAnnouncementsStart())
 });
 
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

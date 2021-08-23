@@ -17,3 +17,7 @@ export const setItemQuantity = (item, quantity) => ({
         quantityToSet: quantity
     }
 });
+
+export const clearCard = () => ({
+    type: shoppingCardActionTypes.CLEAR_CARD
+})
