@@ -54,7 +54,7 @@ const SignIn = ({googleSignInStart, emailSignInStart}) => {
 
     return (
         <div>
-            <TitleContainer name='Sign In' color='blue'/>
+            {/* <TitleContainer name='Sign In' color='blue'/> */}
             <SignInBox>
                 <form onSubmit={handleSubmit}>
                     <FormControlContainer >

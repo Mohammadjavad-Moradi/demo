@@ -66,7 +66,7 @@ const SignUp = () => {
 
     return (
         <div>
-            <TitleContainer name='Sign Up' color='blue'/>
+            {/* <TitleContainer name='Sign Up' color='blue'/> */}
             <SignUpBox>
                 <form onSubmit={handleSubmit}>
                     <FormControlContainer >

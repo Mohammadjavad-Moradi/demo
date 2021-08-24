@@ -2,11 +2,10 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import PropTypes from 'prop-types';
-
 import { createStructuredSelector } from 'reselect';
 import { selectTitles, selectLinkUrls, selectPreviews } from '../../../redux/announcements/announcements.selector';
 
+import PropTypes from 'prop-types';
 import Divider from '@material-ui/core/Divider';
 import Box from '@material-ui/core/Box';
 
@@ -21,11 +20,8 @@ import { TabsContainer,
   ButtonContainer 
 } from './vertical-tabs.styles';
 
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
-
   return (
     <TabPanelContainer
       role="tabpanel"
@@ -56,11 +52,8 @@ function a11yProps(index) {
   };
 }
 
-
-
 const VerticalTabs = ({ titles, linkUrls, previews, history }) => {
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -90,7 +83,7 @@ const VerticalTabs = ({ titles, linkUrls, previews, history }) => {
                 </div>
               ))}
               <ButtonContainer>
-                <CustomButton variant='contained' color='secondary' component='link' to={linkUrls[inde]} >Continue</CustomButton>  
+                <CustomButton variant='contained' color='secondary' component='link' to={linkUrls[inde]} >View All Titles</CustomButton>  
               </ButtonContainer>
             </TabPanel>
           ))

@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom';
 
 import Grid from '@material-ui/core/Grid';
 
-export const TitleBar = styled(({ ...props }) => <Grid container direction='column' alignItems='flex-start' {...props} />)`
+export const TitleBar = styled(({ ...props }) => <Grid container direction='column' {...props} />)`
     width: 100%;
     background-color: ${props => props.color === 'grey' 
-        ? props.theme.palette.secondary.main 
-        : props => props.theme.palette.primary.main};
+        ? props.theme.palette.secondary.charlestonGreen
+        : props => props.theme.palette.secondary.charlestonGreen};
     color: ${props => props.theme.palette.common.white};
     line-height: 3em;
-    text-align: left;
+    text-align: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 1.2em;
 `;
 
 export const TitleNameLink = styled(Link)`

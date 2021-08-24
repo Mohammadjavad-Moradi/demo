@@ -25,7 +25,7 @@ export const HeaderBarMobile = styled.div`
 export const LogoContainer = styled(({...props}) => <Logo {...props} />)`
     width: ${props => props.xs ? '2.5em' : '5em'};
     height: ${props => props.xs ? '2.5em' : '5em'};
-    padding: ${props => props.xs ? '.2em 45%' : '0 1em'};
+    padding: ${props => props.xs ? '.2em 10%' : '0 1em'};
     margin: ${props => props.xs ? '0 auto' : '0'};
     
     @keyframes appear {
@@ -53,7 +53,7 @@ const setValue = (value) => {
 export const AppBarContainer = styled(({...props}) => <AppBar {...props} />)`
     
     ${props => setValue(props.value)}
-    background-color: ${props => isComments ? props.theme.palette.secondary.charlestonGreen : props.theme.palette.primary.main} !important;
+    background-color: ${props => isComments ? props.theme.palette.secondary.charlestonGreen : props.theme.palette.secondary.charlestonGreen} !important;
     
     opacity: 95%;
     transition: background-color 2s ease-out;

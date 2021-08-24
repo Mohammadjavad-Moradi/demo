@@ -12,16 +12,16 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
-import { LinkContainer, TitleContainer, TabPanelContainer } from './horizontal-tabs.styles';
+import { LinkContainer, TabPanelContainer } from './horizontal-tabs.styles';
 
 import { createStructuredSelector } from 'reselect';
 import { selectTitles, selectLinkUrls, selectPreviews } from '../../../redux/announcements/announcements.selector';
 
 import CustomButton from '../../atom-components/custom-button/custom-button.component';
+import TitleContainer from '../../atom-components/title-container/title-container.component';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
-
     return (
         <TabPanelContainer
             role="tabpanel"
@@ -52,12 +52,9 @@ function a11yProps(index) {
     };
 }
 
-
-
 const HorizontalTabs = ({ title, linkUrl, preview, history }) => {
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
-
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -68,9 +65,7 @@ const HorizontalTabs = ({ title, linkUrl, preview, history }) => {
 
     return (
         <div>
-            <TitleContainer>
-                <span>اعلانات</span>
-            </TitleContainer>
+            <TitleContainer name='News Categories' color='grey' />
             <AppBar position="static" color="default">
                 <Tabs
                     value={value}
@@ -100,7 +95,7 @@ const HorizontalTabs = ({ title, linkUrl, preview, history }) => {
                                     <LinkContainer key={id} onClick={() => history.push(`${linkUrl[i]}/${item.id}`)}>{item.title}</LinkContainer>
                                 ))
                             }
-                            <CustomButton variant='contained' color='secondary' component='link' to={linkUrl[i]} >ادامه مطلب</CustomButton>
+                            <CustomButton variant='contained' color='secondary' component='link' to={linkUrl[i]} >View All Titles</CustomButton>
                         </TabPanel>
                     ))
                 }

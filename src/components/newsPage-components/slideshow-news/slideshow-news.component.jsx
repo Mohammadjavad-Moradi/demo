@@ -28,7 +28,6 @@ const SlideShow = ({announcementPreview, title, linkUrl, history}) => {
     return (
         <SlideshowContainer>
             <TitleContainer name={title} linkUrl={linkUrl} color='grey'/>
-            {   
                 <CarouselContainer interval='4000' animation='slide' indicators={false} autoPlay={true}>
                     {announcementPreview.map((item, index) => (
                         <SlideItem key={index}>
@@ -50,7 +49,6 @@ const SlideShow = ({announcementPreview, title, linkUrl, history}) => {
                         </SlideItem>
                     ))}
                 </CarouselContainer>
-            }
         </SlideshowContainer>
     )
 }

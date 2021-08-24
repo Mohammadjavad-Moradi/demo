@@ -27,8 +27,9 @@ export const GridListContainer = styled(({...props}) => <GridList  {...props} />
     justify-content: space-around;
     flex-direction: row;
     transform: translateZ(0);
-    background: rgb(36,112,171);
-    background: linear-gradient(90deg, rgba(36,112,171,1) 0%, rgba(255,255,255,1) 0%, rgba(16,78,126,1) 0%, rgba(36,112,171,1) 40%, rgba(36,112,171,1) 60%, rgba(16,78,126,1) 100%);
+    background: ${props => props.theme.palette.secondary.charlestonGreen};
+    border-bottom: 3px solid white;
+    opacity: 95%;
     li {
         width: auto !important;
         line-height: 3em;

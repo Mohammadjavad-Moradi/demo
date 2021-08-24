@@ -7,9 +7,9 @@ export const FooterContainer = styled.div`
     width: 100% !important;
 `;
 
-export const PaperContainer = styled(({...props}) => <Paper elevation={0} {...props}/>)`
-    background-color: ${props => props.theme.palette.secondary.main} !important;
-    color: ${props => props.theme.palette.common.white} !important;
+export const PaperContainer = styled(({...props}) => <div elevation={0} {...props}/>)`
+    background-color: #243b55 !important;
+    color: #00f8ae !important;
     text-align: center;
     padding: 1em 1em;
 `;

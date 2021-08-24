@@ -10,6 +10,7 @@ export const SignUpBox = styled.div`
     width: 300px;
     margin: 50px auto;
     height: auto;
+    padding-top: 100px;
 `;
 
 export const Title = styled.div`

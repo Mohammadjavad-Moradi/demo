@@ -24,14 +24,9 @@ import SwipeableTemporaryDrawer from '../swipeable-drawer/swipeable-drawer.compo
 import QuickLinksSlider from '../quick-links-slider/quick-links-slider.component';
 
 const HeaderContainer = ({ quickLinks }) => {
-
     const theme = useTheme();
-    const matchesMd = useMediaQuery(theme.breakpoints.down('md'));
-    const matchesSm = useMediaQuery(theme.breakpoints.down('sm'));
-    const matchesXs = useMediaQuery(theme.breakpoints.down('xs'));
-    
+    const matchesXs = useMediaQuery(theme.breakpoints.down('xs')); 
     const [value, setValue] = useState(0);
-
     useEffect(() => {
         quickLinks.content.map((item, index) => {
                 if (item.linkUrl === window.location.pathname) {
@@ -43,7 +38,6 @@ const HeaderContainer = ({ quickLinks }) => {
     const handleChange = (event, value) => {
         setValue(value);
     }
-
 
     const tabs = (
         <ToolBarContainer xs={matchesXs ? 'true' : undefined} disableGutters>
@@ -68,10 +62,8 @@ const HeaderContainer = ({ quickLinks }) => {
             <OptionContainer>            
                 <Profile/>                
             </OptionContainer>
-            
         </ToolBarContainer>
     )
-
     return (
         <React.Fragment>
             <AppBarContainer value={value} position={ matchesXs ? 'static' : "fixed"}>       

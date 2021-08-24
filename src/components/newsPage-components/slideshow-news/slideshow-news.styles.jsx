@@ -16,7 +16,7 @@ export const CarouselContainer = styled(({ ...props }) => <Carousel interval='40
 export const SlideItem = styled(({ ...props }) => <Grid container direction='column' alignItems='flex-start' spacing={2} justify='space-between' {...props} />)`
   padding: 1em;
   margin: 0 auto !important;
-  min-height: 400px;
+  height: 550px;
   color: ${props => props.theme.palette.common.white};
   background: rgb(108,166,185);
   background: linear-gradient(159deg, rgba(108,166,185,1) 0%, rgba(40,113,139,1) 23%, rgba(31,75,92,1) 35%, rgba(64,119,143,1) 50%, rgba(16,90,124,1) 66%, rgba(41,75,91,1) 83%, rgba(69,123,157,1) 157%);
