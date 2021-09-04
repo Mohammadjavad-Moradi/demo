@@ -3,12 +3,12 @@ import 'firebase/firestore';
 import 'firebase/auth';
 
 const config = {
-    apiKey: "AIzaSyASRjjU4KHBZnz2PDgxlRqQYprysVwEscM",
+    apiKey: "***",
     authDomain: "cbi-intranet.firebaseapp.com",
     projectId: "cbi-intranet",
     storageBucket: "cbi-intranet.appspot.com",
     messagingSenderId: "471825400147",
-    appId: "1:471825400147:web:06e1e6ced1a875092f61a6",
+    appId: "***",
     measurementId: "G-E2H4L1NLFG",
     //storageBucket: 'gs://cbi-intranet.appspot.com'
 };
